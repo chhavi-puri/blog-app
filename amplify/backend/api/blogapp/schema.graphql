@@ -1,0 +1,23 @@
+type Club @model 
+  @key (name:"SortbyType", fields:["type"], queryField: "SortByType"){
+  id: ID!
+  clubName: String!
+  type: String!
+  student:[StudentClubJoin]!@connection(keyName: "byClub", fields: ["id"])
+
+  }
+type Student @model{
+  id: ID!
+  studentName: ID!
+  club: [StudentClubJoin]! @connection(keyName: "byStudent", fields: ["id"])
+}
+  
+type StudentClubJoin @model
+ @key(name: "byClub", fields: ["clubID", "studentID"])
+ @key(name: "byStudent", fields: ["studentID", "clubID"]){
+ id: ID!
+ clubID: ID!
+ studentID: ID!
+ club: Club!   @connection(fields: ["clubID"])       
+ student: Student!  @connection(fields: ["studentID"])
+ }
